@@ -152,6 +152,7 @@ class IdleClicker {
         this.dpsInterval = null;
         this.autoSaveInterval = null;
         this.yandexSDK = null;
+        this.notificationTimeout = null;
 
         this.initYandexSDK();
         this.init();
@@ -281,7 +282,8 @@ class IdleClicker {
         const cost = this.getUpgradeCost(upgradeId);
 
         if (this.state.money < cost) {
-            this.showNotification('Недостаточно монет!');
+            this.showNotification('❌ Недостаточно монет!', 'error');
+            this.triggerVibration(50);
             return;
         }
 
@@ -291,6 +293,8 @@ class IdleClicker {
 
         this.applyUpgradeEffect(upgradeId);
         this.render();
+        this.showNotification(`✅ ${upgrade.name} куплен!`, 'success');
+        this.triggerVibration(20);
         this.logEvent('upgrade_bought', { upgrade: upgradeId, level: upgrade.level });
     }
 
@@ -320,13 +324,16 @@ class IdleClicker {
         const cost = this.getWorkerCost(workerId);
 
         if (this.state.money < cost) {
-            this.showNotification('Недостаточно монет!');
+            this.showNotification('❌ Недостаточно монет!', 'error');
+            this.triggerVibration(50);
             return;
         }
 
         this.state.money -= cost;
         worker.count++;
         this.render();
+        this.showNotification(`✅ Нанят ${worker.name}!`, 'success');
+        this.triggerVibration(20);
         this.logEvent('worker_bought', { worker: workerId });
     }
 
@@ -335,7 +342,7 @@ class IdleClicker {
         if (!pack) return;
 
         this.state.premium += pack.premium;
-        this.showNotification(`+${pack.premium} ⭐ премиум монет!`);
+        this.showNotification(`✨ +${pack.premium} ⭐ премиум!`, 'success');
         this.render();
         this.logEvent('premium_bought', { pack: packId });
     }
@@ -431,9 +438,28 @@ class IdleClicker {
         setTimeout(() => span.remove(), 1000);
     }
 
-    showNotification(message) {
+    showNotification(message, type = 'info') {
         if (!this.state.settings.notifications) return;
-        alert(message);
+
+        // Удаляем предыдущее уведомление если оно есть
+        const existingNotif = document.getElementById('notification');
+        if (existingNotif) {
+            existingNotif.remove();
+            clearTimeout(this.notificationTimeout);
+        }
+
+        // Создаем новое уведомление
+        const notif = document.createElement('div');
+        notif.id = 'notification';
+        notif.className = `notification notification-${type} show`;
+        notif.textContent = message;
+        document.body.appendChild(notif);
+
+        // Удаляем через 3 секунды
+        this.notificationTimeout = setTimeout(() => {
+            notif.classList.remove('show');
+            setTimeout(() => notif.remove(), 300);
+        }, 3000);
     }
 
     playSound(type) {
@@ -469,11 +495,27 @@ class IdleClicker {
         try {
             const data = JSON.stringify(this.state.toJSON());
             localStorage.setItem('idleClickerSave', data);
-            this.showNotification('Игра сохранена!');
+            this.showSaveIndicator();
+            this.showNotification('💾 Игра сохранена!', 'save');
             this.logEvent('game_saved');
         } catch (e) {
             console.error('Save error:', e);
+            this.showNotification('❌ Ошибка сохранения!', 'error');
         }
+    }
+
+    showSaveIndicator() {
+        // Создаем иконку сохранения
+        const saveIcon = document.createElement('div');
+        saveIcon.className = 'save-indicator';
+        saveIcon.textContent = '💾';
+        document.body.appendChild(saveIcon);
+
+        // Удаляем через 1 секунду
+        setTimeout(() => {
+            saveIcon.classList.add('hide');
+            setTimeout(() => saveIcon.remove(), 300);
+        }, 1000);
     }
 
     loadGame() {
@@ -482,10 +524,14 @@ class IdleClicker {
             if (data) {
                 this.state.fromJSON(JSON.parse(data));
                 this.render();
+                this.showNotification('📂 Игра загружена!', 'info');
                 this.logEvent('game_loaded');
+            } else {
+                this.showNotification('⚠️ Сохранений не найдено', 'warning');
             }
         } catch (e) {
             console.error('Load error:', e);
+            this.showNotification('❌ Ошибка загрузки!', 'error');
         }
     }
 
@@ -493,6 +539,7 @@ class IdleClicker {
         localStorage.removeItem('idleClickerSave');
         this.state = new GameState();
         this.render();
+        this.showNotification('🔄 Игра сброшена!', 'info');
         this.logEvent('game_reset');
         this.closeModal('menuModal');
     }
@@ -509,6 +556,7 @@ class IdleClicker {
     destroy() {
         if (this.dpsInterval) clearInterval(this.dpsInterval);
         if (this.autoSaveInterval) clearInterval(this.autoSaveInterval);
+        if (this.notificationTimeout) clearTimeout(this.notificationTimeout);
         this.saveGame();
     }
 }
