@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#1a1a2e">
+    <title>Idle Clicker - Яндекс Игры</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="manifest" href="manifest.json">
+    <script src="https://yandex.ru/games/sdk/v2"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-top">
+                <div class="currency-display">
+                    <span class="currency-icon">💰</span>
+                    <span class="currency-value" id="moneyDisplay">0</span>
+                </div>
+                <div class="premium-display">
+                    <span class="premium-icon">⭐</span>
+                    <span class="premium-value" id="premiumDisplay">0</span>
+                </div>
+                <button class="menu-btn" id="menuBtn">☰</button>
+            </div>
+        </header>
+
+        <!-- Main Game Area -->
+        <main class="game-area">
+            <div class="click-zone">
+                <button class="click-button" id="clickButton">
+                    <span class="click-value" id="clickValue">+1</span>
+                </button>
+                <p class="tap-text">Нажимай!</p>
+            </div>
+
+            <!-- Statistics -->
+            <div class="stats">
+                <div class="stat">
+                    <span class="stat-label">DPS:</span>
+                    <span class="stat-value" id="dpsDisplay">0</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Клик:</span>
+                    <span class="stat-value" id="clickPowerDisplay">1</span>
+                </div>
+            </div>
+        </main>
+
+        <!-- Upgrades Section -->
+        <section class="upgrades-section">
+            <h2>Улучшения</h2>
+            <div class="upgrades-container" id="upgradesContainer">
+                <!-- Динамически генерируется -->
+            </div>
+        </section>
+
+        <!-- Passive Income Section -->
+        <section class="workers-section">
+            <h2>Рабочие</h2>
+            <div class="workers-container" id="workersContainer">
+                <!-- Динамически генерируется -->
+            </div>
+        </section>
+
+        <!-- Menu Modal -->
+        <div class="modal" id="menuModal">
+            <div class="modal-content">
+                <h2>Меню</h2>
+                <button class="menu-item" id="saveBtn">💾 Сохранить</button>
+                <button class="menu-item" id="loadBtn">📂 Загрузить</button>
+                <button class="menu-item" id="resetBtn">🔄 Новая игра</button>
+                <button class="menu-item" id="settingsBtn">⚙️ Настройки</button>
+                <button class="menu-item close-btn" id="closeMenuBtn">Закрыть</button>
+            </div>
+        </div>
+
+        <!-- Settings Modal -->
+        <div class="modal" id="settingsModal">
+            <div class="modal-content">
+                <h2>Настройки</h2>
+                <div class="setting">
+                    <label>
+                        <input type="checkbox" id="soundToggle" checked>
+                        Звук
+                    </label>
+                </div>
+                <div class="setting">
+                    <label>
+                        <input type="checkbox" id="vibrationToggle" checked>
+                        Вибрация
+                    </label>
+                </div>
+                <div class="setting">
+                    <label>
+                        <input type="checkbox" id="notificationsToggle" checked>
+                        Уведомления
+                    </label>
+                </div>
+                <div class="setting">
+                    <label>
+                        <input type="checkbox" id="autoSaveToggle" checked>
+                        Автосохранение
+                    </label>
+                </div>
+                <button class="menu-item close-btn" id="closeSettingsBtn">Закрыть</button>
+            </div>
+        </div>
+
+        <!-- Floating Numbers -->
+        <div id="floatingNumbers"></div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>

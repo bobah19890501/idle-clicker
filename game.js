@@ -1,4 +1,3 @@
-// ===== GAME CONFIG =====
 const GAME_CONFIG = {
     BASE_CLICK_POWER: 1,
     AUTO_SAVE_INTERVAL: 30000,
@@ -6,7 +5,6 @@ const GAME_CONFIG = {
     WORKER_MULTIPLIER: 1.2,
 };
 
-// ===== UPGRADES DATA =====
 const UPGRADES = {
     clickPower: {
         name: 'Щипцы',
@@ -37,7 +35,6 @@ const UPGRADES = {
     },
 };
 
-// ===== WORKERS DATA =====
 const WORKERS = {
     ant: {
         name: 'Муравей',
@@ -77,7 +74,6 @@ const WORKERS = {
     },
 };
 
-// ===== SHOP ITEMS =====
 const SHOP_ITEMS = {
     premiumPack1: {
         name: 'Стартовый пакет',
@@ -105,7 +101,6 @@ const SHOP_ITEMS = {
     },
 };
 
-// ===== GAME STATE =====
 class GameState {
     constructor() {
         this.money = 0;
@@ -150,7 +145,6 @@ class GameState {
     }
 }
 
-// ===== MAIN GAME CLASS =====
 class IdleClicker {
     constructor() {
         this.state = new GameState();
@@ -519,7 +513,6 @@ class IdleClicker {
     }
 }
 
-// ===== START GAME =====
 let game;
 document.addEventListener('DOMContentLoaded', () => {
     game = new IdleClicker();
