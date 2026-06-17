@@ -378,6 +378,100 @@ body {
     }
 }
 
+/* Notifications - Toast Style */
+#notification {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(150px);
+    padding: 15px 25px;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    z-index: 2000;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    max-width: 90%;
+    text-align: center;
+}
+
+#notification.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+}
+
+.notification-success {
+    background: linear-gradient(135deg, #00d4ff 0%, #0099ff 100%);
+    border: 2px solid #00ff88;
+    box-shadow: 0 5px 20px rgba(0, 255, 136, 0.4);
+}
+
+.notification-error {
+    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+    border: 2px solid #ff4444;
+    box-shadow: 0 5px 20px rgba(255, 68, 68, 0.4);
+}
+
+.notification-warning {
+    background: linear-gradient(135deg, #ffa500 0%, #ff8c00 100%);
+    border: 2px solid #ffd700;
+    box-shadow: 0 5px 20px rgba(255, 165, 0, 0.4);
+}
+
+.notification-info {
+    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+    border: 2px solid #a78bfa;
+    box-shadow: 0 5px 20px rgba(124, 58, 237, 0.4);
+}
+
+.notification-save {
+    background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+    border: 2px solid #6ee7b7;
+    box-shadow: 0 5px 20px rgba(16, 185, 129, 0.4);
+}
+
+/* Save Indicator Animation */
+.save-indicator {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    font-size: 32px;
+    z-index: 1500;
+    animation: saveIcon 1s ease-out forwards;
+    opacity: 1;
+}
+
+.save-indicator.hide {
+    animation: saveIconOut 0.3s ease-in forwards;
+}
+
+@keyframes saveIcon {
+    0% {
+        opacity: 0;
+        transform: scale(0) rotate(-45deg);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.2) rotate(0deg);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+    }
+}
+
+@keyframes saveIconOut {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(0.5) translateY(-20px);
+    }
+}
+
 /* Responsive Design */
 @media (max-width: 480px) {
     .click-button {
@@ -408,6 +502,23 @@ body {
 
     .header-top {
         gap: 10px;
+    }
+
+    #notification {
+        bottom: 15px;
+        left: 10px;
+        right: 10px;
+        transform: translateY(150px);
+        white-space: normal;
+    }
+
+    #notification.show {
+        transform: translateY(0);
+    }
+
+    .save-indicator {
+        top: 70px;
+        right: 15px;
     }
 }
 
